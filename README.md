@@ -12,8 +12,6 @@
 
 [Youtube Non-Round Design](https://greasyfork.org/en/scripts/453802-youtube-non-rounded-design) - bin kein freund davon wenn alles rund ist
 
-[Youtube Proper Description](https://greasyfork.org/en/scripts/440613-youtube-proper-description) - passt die Beschreibung sowie den Text unter den Videos an
-
 [Bypass All Shortlinks Debloated](https://codeberg.org/Amm0ni4/bypass-all-shortlinks-debloated) - überspringt alle bekannten URL Shortener
 
 [Perplexity Model Selection](https://greasyfork.org/en/scripts/490634-perplexity-model-selection) - Fügt einen Menu bei der Texteingabe zur Auswahl des Models bei Perplexity hinzu
