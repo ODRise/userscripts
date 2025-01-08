@@ -10,11 +10,7 @@
 
 [Bypass All Shortlinks Debloated](https://codeberg.org/Amm0ni4/bypass-all-shortlinks-debloated) - überspringt alle bekannten URL Shortener
 
-[Perplexity Model Selection](https://greasyfork.org/en/scripts/490634-perplexity-model-selection) - Fügt einen Menu bei der Texteingabe zur Auswahl des Models bei Perplexity hinzu
-
 [Reddit Old Redirect](https://greasyfork.org/en/scripts/471477-reddit-old-redirect) - Leitet alle reddit.com urls auf old.reddit.com um
-
-[Fix Old Reddit Image Links](https://github.com/abdurazaaqmohammed/userscripts?tab=readme-ov-file#fix-old-reddit-image-links)
 
 [Undiscord](https://github.com/victornpb/undiscord) - Delete all messages in a Discord channel or DM
 
