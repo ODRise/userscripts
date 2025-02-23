@@ -1,18 +1,16 @@
 # userscripts für [violentmonkey](https://violentmonkey.github.io/)
 
-[FrankerFaceZ](https://www.frankerfacez.com/) - Twitch Erweiterung, dort unter Addons BTTV/7TV etc aktivieren
+[FrankerFaceZ](https://www.frankerfacez.com/) - Twitch extension, activate BTTV/7TV etc. under Addons. No need for BTTv or 7TV extension
 
-[Youtube HD Premium](https://greasyfork.org/en/scripts/498145-youtube-hd-premium) - Nimmt automatisch die höchste Auflösung für das Video
+[Youtube HD Premium](https://greasyfork.org/en/scripts/498145-youtube-hd-premium) - Automatically takes the highest resolution set for the video incl. Youtube Premium bitrate
 
 [Return Youtube Dislike](https://www.returnyoutubedislike.com/)
 
-[Youtube Non-Round Design](https://greasyfork.org/en/scripts/453802-youtube-non-rounded-design) - bin kein freund davon wenn alles rund ist
+[Youtube Non-Round Design](https://greasyfork.org/en/scripts/453802-youtube-non-rounded-design)
 
-[Bypass All Shortlinks Debloated](https://codeberg.org/Amm0ni4/bypass-all-shortlinks-debloated) - überspringt alle bekannten URL Shortener
+[Bypass All Shortlinks Debloated](https://codeberg.org/Amm0ni4/bypass-all-shortlinks-debloated)
 
-[Reddit Old Redirect](https://greasyfork.org/en/scripts/471477-reddit-old-redirect) - Leitet alle reddit.com urls auf old.reddit.com um
-
-[Undiscord](https://github.com/victornpb/undiscord) - Delete all messages in a Discord channel or DM
+[Always use AV1 Youtube](https://greasyfork.org/en/scripts/466127-use-youtube-av1)
 
 
 Wikipedia Desktop to mobile redirect
