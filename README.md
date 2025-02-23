@@ -1,4 +1,4 @@
-# userscripts für [violentmonkey](https://violentmonkey.github.io/)
+# userscripts for [violentmonkey](https://violentmonkey.github.io/)
 
 [FrankerFaceZ](https://www.frankerfacez.com/) - Twitch extension, activate BTTV/7TV etc. under Addons. No need for BTTv or 7TV extension
 
