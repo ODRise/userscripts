@@ -6,6 +6,8 @@
 
 [Youtube 1.25 default speed - excluding live streams](https://github.com/ODRise/congenial-lamp/tree/main)
 
+[Completely disables YouTube's autoplay feature and prevents videos from autoplaying when the page loads](https://github.com/ODRise/ytaply/)
+
 [Return Youtube Dislike](https://www.returnyoutubedislike.com/)
 
 [Always use AV1 Youtube](https://greasyfork.org/en/scripts/466127-use-youtube-av1)
