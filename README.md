@@ -14,4 +14,4 @@
 
 [Wiki mobile redirect](https://github.com/ODRise/solid-octo-broccoli/tree/main)
 
-[Youtube 1.25 default speed](https://github.com/ODRise/congenial-lamp/tree/main)
+[Youtube 1.25 default speed - excluding live streams](https://github.com/ODRise/congenial-lamp/tree/main)
