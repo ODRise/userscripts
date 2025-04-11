@@ -384,8 +384,8 @@
       // ==UserScript==
       // @name         YouTube Default Playback Speed
       // @namespace    https://youtube.com/
-      // @version             v1
-      // @author              OD
+      // @version      v1
+      // @author       OD
       // @description  Automatically sets YouTube playback speed to 2.5x, excluding live streams.
       // @match        https://www.youtube.com/*
       // @grant        none
