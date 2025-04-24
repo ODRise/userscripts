@@ -966,3 +966,216 @@
 
 </details>
 
+<details>
+  <summary>Unround Everything Everywhere</summary>
+  
+      // ==UserScript==
+      // @name Unround Everything Everywhere
+      // @namespace RM
+      // @version 1.9.0
+      // @description Forces zero border-radius to everything possible.
+      // @license CC0 - Public Domain
+      // @grant GM_addStyle
+      // @run-at document-start
+      // @match *://*/*
+      // ==/UserScript==
+      
+      (function() {
+        let css = "";
+      
+        // --- Global and Aggressive Unrounding ---
+        // Applies border-radius: 0 to almost all elements and their pseudo-elements.
+        // Excludes radio buttons and their adjacent labels to preserve standard radio behavior.
+        // The #u#n#r#o#u#n#d exclusion is likely a placeholder or specific edge case exclusion.
+        css += `
+          *:not(#u#n#r#o#u#n#d):not(input[type="radio" i]):not(input[type="radio" i] + label){
+            &,
+            &::before,
+            &::after {
+              border-radius: 0 !important;
+            }
+          }
+        `;
+      
+        // --- Specific Fixes for SVG Elements ---
+        // Targets SVG elements commonly used for icons or avatars that might use
+        // rx/ry attributes or circle elements to create rounded shapes.
+        // This aims to unround these specific SVG shapes.
+        css += `
+          /* Unround rect elements within SVG */
+          svg rect {
+            rx: 0 !important;
+            ry: 0 !important;
+          }
+      
+          /* Attempt to unround SVG circles used as masks or shapes */
+          /* This rule is potentially aggressive and might affect unintended SVGs */
+          svg circle {
+              r: initial !important; /* Reset radius */
+              /* If a circle is used for a clipping mask, try to disable it */
+              mask: none !important;
+              clip-path: none !important;
+          }
+      
+          /* More specific rule for circles potentially used as backgrounds/outlines */
+          circle[cx="50%"][cy="50%"][r="50%"] {
+              r: 100% !important; /* Try setting radius to 100% of container */
+              /* Consider adding overflow: hidden to the parent SVG if needed */
+          }
+        `;
+      
+        // --- Compatibility Layer for Border Widths ---
+        // This @layer rule attempts to reset border-width for form elements
+        // to 1px at a low specificity level, potentially counteracting unwanted
+        // browser styling changes caused by the aggressive border-radius override.
+        css += `
+          @layer i_miss_true_user_origin_level_stylesheets {
+            :where(input, button, select) {
+              border-width: 1px;
+            }
+          }
+        `;
+      
+        // --- Site-Specific Overrides ---
+        // These rules apply only to specific websites to fix elements that the
+        // general rules might not handle correctly or to target elements
+        // using non-standard rounding techniques (like clip-path or masks).
+      
+        // Facebook & Workplace
+        if ((location.hostname === "facebook.com" || location.hostname.endsWith(".facebook.com"))) {
+          css += `
+            /* Square masks used for avatars/status indicators */
+            :root#facebook svg[role] > mask[id]:first-child + g[mask]:last-child {
+              mask: none !important;
+              /* Hide the original circle outline */
+              & circle { opacity: 0.1 !important; }
+              /* Add a squared outline using the image element */
+              & image:has(~ circle[stroke="var(--accent)"]) {
+                outline: 2px solid var(--accent);
+                outline-offset: 2px;
+                & ~ circle { display: none; } /* Ensure the original circle is hidden */
+              }
+            }
+      
+            /* Facebook Logo - Unrounding the container and the "f" shape */
+            :root#facebook svg[viewBox="0 0 36 36"] path {
+              /* Unround the main background circle to a square */
+              &[d="M20.181 35.87C29.094 34.791 36 27.202 36 18c0-9.941-8.059-18-18-18S0 8.059 0 18c0 8.442 5.811 15.526 13.652 17.471L14 34h5.5l.681 1.87Z"] ,
+              &[d="M15 35.8C6.5 34.3 0 26.9 0 18 0 8.1 8.1 0 18 0s18 8.1 18 18c0 8.9-6.5 16.3-15 17.8l-1-.8h-4l-1 .8z"] {
+                d: path("M0 0 H 36 V 36 H 0 Z"); /* Replace circle path with square path */
+              }
+              /* Unround the bottom of the "f" shape */
+              &[d="M13.651 35.471v-11.97H9.936V18h3.715v-2.37c0-6.127 2.772-8.964 8.784-8.964 1.138 0 3.103.223 3.91.446v4.983c-.425-.043-1.167-.065-2.081-.065-2.952 0-4.09 1.116-4.09 4.025V18h5.883l-1.008 5.5h-4.867v12.37a18.183 18.183 0 0 1-6.53-.399Z"],
+              &[d="M25 23l.8-5H21v-3.5c0-1.4.5-2.5 2.7-2.5H26V7.4c-1.3-.2-2.7-.4-4-.4-4.1 0-7 2.5-7 7v4h-4.5v5H15   V 35 h 6   V23h4z"] {
+                d: path("M25 23l.8-5H21v-3.5c0-1.4.5-2.5 2.7-2.5H26V7.4c-1.3-.2-2.7-.4-4-.4-4.1 0-7 2.5-7 7v4h-4.5v5H15 V 36 h 6 V23h4z"); /* Adjust path to be straight at the bottom */
+              }
+            }
+          `;
+        }
+      
+        // Twitter / X
+        if ((location.hostname === "twitter.com" || location.hostname.endsWith(".twitter.com")) || (location.hostname === "x.com" || location.hostname.endsWith(".x.com"))) {
+          css += `
+            /* Disable clip-path used for avatars */
+            [style*='clip-path: url("#circle-hw-shapeclip-clipconfig")'] {
+              clip-path: none !important;
+            }
+          `;
+        }
+      
+        // WhatsApp Web
+        if ((location.hostname === "web.whatsapp.com" || location.hostname.endsWith(".web.whatsapp.com"))) {
+          css += `
+            /* Fixes for specific SVG backgrounds/shapes in WhatsApp */
+            svg:has(path.background) {
+              background-color: rgba(var(--white-rgb),.16); /* Restore background color */
+            }
+            svg:has(path.background) g path{
+              opacity: .3; /* Restore opacity */
+            }
+            svg:has(path.background) path.background {
+              display: none; /* Hide the original background path */
+            }
+          `;
+        }
+      
+        // Google / Chromium
+        if ((location.hostname === "google.com" || location.hostname.endsWith(".google.com")) || (location.hostname === "chromium.org" || location.hostname.endsWith(".chromium.org"))) {
+          css += `
+            /* Google One avatar four-colour outline - replacing curved paths with straight lines */
+            path[d="M4.02,28.27C2.73,25.8,2,22.98,2,20c0-2.87,0.68-5.59,1.88-8l-1.72-1.04C0.78,13.67,0,16.75,0,20c0,3.31,0.8,6.43,2.23,9.18L4.02,28.27z"][fill="#F6AD01"] {
+              d: path("M 2 2 v 36 l 2 -2 V 4 Z"); /* Left segment */
+            }
+            path[d="M32.15,33.27C28.95,36.21,24.68,38,20,38c-6.95,0-12.98-3.95-15.99-9.73l-1.79,0.91C5.55,35.61,12.26,40,20,40c5.2,0,9.93-1.98,13.48-5.23L32.15,33.27z"][fill="#249A41"] {
+              d: path("M 2 38 h 36 l -2 -2 H 4 Z"); /* Bottom segment */
+            }
+            path[d="M33.49,34.77C37.49,31.12,40,25.85,40,20c0-5.86-2.52-11.13-6.54-14.79l-1.37,1.46C35.72,9.97,38,14.72,38,20c0,5.25-2.26,9.98-5.85,13.27L33.49,34.77z"][fill="#3174F1"] {
+              d: path("M 38 2 v 36 l -2 -2 V 4 Z"); /* Right segment */
+            }
+            path[d="M20,2c4.65,0,8.89,1.77,12.09,4.67l1.37-1.46C29.91,1.97,25.19,0,20,0l0,0C12.21,0,5.46,4.46,2.16,10.96L3.88,12C6.83,6.08,12.95,2,20,2"][fill="#E92D18"] {
+              d: path("M 2 2 h 36 l -2 2 H 4 Z"); /* Top segment */
+            }
+          `;
+        }
+      
+        // Spotify - Corrected Hostname Check
+        if ((location.hostname === "spotify.com" || location.hostname.endsWith(".spotify.com"))) {
+          css += `
+            /* Specific path overrides for Spotify icons (e.g., checkmarks, circles) */
+            path[d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12zm16.398-2.38a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308 7.425-7.425z"] {
+              d: path("M 4 4 H 20 V 20 H 4 Z M1 12m16.398-2.38a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308 7.425-7.425z");
+            }
+            path[d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z"] {
+              d: path("M 2 2 H 14 V 14 H 2 Z M0 8m11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z");
+            }
+            path[d="M11.999 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm-11 9c0-6.075 4.925-11 11-11s11 4.925 11 11-4.925 11-11 11-11-4.925-11-11z"] {
+              d: path("M 2 2 H 22 V 22 H 2 Z"); /* Unround circle outline */
+              stroke-width: 2px;
+              fill: none;
+              stroke: color-mix(in srgb,currentcolor, transparent);
+            }
+            path[d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"] {
+              d: path("M 1 1 H 15 V 15 H 1 Z"); /* Unround smaller circle outline */
+              stroke-width: 1.25px;
+              fill: none;
+              stroke: color-mix(in srgb,currentcolor, transparent);
+            }
+          `;
+        }
+      
+        // Microsoft Copilot
+        if ((location.hostname === "copilot.microsoft.com" || location.hostname.endsWith(".copilot.microsoft.com"))) {
+          css += `
+            /* Disable clip-path or other properties used for "squircle" shapes */
+            [class*="squircle"] {
+              clip-path: none !important;
+              border-radius: 0 !important; /* Ensure border-radius is also zeroed */
+            }
+          `;
+        }
+      
+        // Seznam Zprávy
+        if ((location.hostname === "seznamzpravy.cz" || location.hostname.endsWith(".seznamzpravy.cz"))) {
+          css += `
+            /* Disable masks potentially used for squircle images */
+            svg > defs:has([id*="squircle"]) ~ image[mask]:only-of-type {
+              mask: none !important;
+            }
+          `;
+        }
+      
+        // --- Inject CSS ---
+        // Uses GM_addStyle if available (Tampermonkey, Greasemonkey) or falls back
+        // to creating a <style> element and appending it to the document head.
+        if (typeof GM_addStyle !== "undefined") {
+          GM_addStyle(css);
+        } else {
+          const styleNode = document.createElement("style");
+          styleNode.appendChild(document.createTextNode(css));
+          (document.querySelector("head") || document.documentElement).appendChild(styleNode);
+        }
+      })();
+
+
+</details>
+
